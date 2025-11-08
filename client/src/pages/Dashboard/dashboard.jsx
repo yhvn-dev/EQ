@@ -37,13 +37,13 @@ function Feed() {
     }
   }
 
- 
+  console.log(eq)
    return (
-    <section className='full grid grid-cols-1fr grid-rows-[3rem_5rem_75vh]  gap-4 overflow-y-hidden '>
+    <section className='full grid grid-cols-1fr grid-rows-[3rem_5rem_75vh] gap-4 overflow-y-hidden'>
 
       <Sidebar/>
     
-      <main className="full shadow-lg column-t row-start-3 row-end-3 col-start-1 col-end-1 md:col-start-2 col-span-full overflow-y-hidden" >
+      <main className="full shadow-lg column-t row-start-3 row-end-3 col-start-1 col-end-1 overflow-y-hidden" >
      
         <nav className="w-full center h-[30%] p-2 ">
           <div className='full center-l'>EarthQuakes</div>

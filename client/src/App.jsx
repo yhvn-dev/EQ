@@ -4,6 +4,9 @@ import Login from "./pages/Auth/Login";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import Feed from "./pages/Feed/feed"
+import Reports from "./pages/Reports/reports"
+import Dashboard from "./pages/Dashboard/dashboard"
+
 
 function App() {
   return (
@@ -12,8 +15,11 @@ function App() {
         <Route path="/" element={<Feed/>} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/reports" element={<Reports  />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+      
       </Routes>
     </BrowserRouter>
   );

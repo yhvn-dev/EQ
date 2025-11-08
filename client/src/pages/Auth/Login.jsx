@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login, verifyLoginCode, resendVerification } from "../../services/userService";
+import {Mail,Lock} from "lucide-react"
 
 function Login() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Login() {
       [e.target.name]: e.target.value,
     });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -51,6 +52,7 @@ function Login() {
         setShowModal(true);
         setInfoMessage("A verification code was sent to your email.");
       } else {
+        
         // If server returns token directly (fallback), save and redirect
         localStorage.setItem("token", response.token);
         localStorage.setItem("user", JSON.stringify(response.user));
@@ -75,7 +77,7 @@ function Login() {
       localStorage.setItem("token", response.token);
       localStorage.setItem("user", JSON.stringify(response.user));
       setShowModal(false);
-      navigate("/feed");
+      navigate("/dashboard");
     } catch (err) {
       setError(
         err.response?.data?.message || "Invalid code. Please try again."
@@ -102,8 +104,8 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className="min-h-screen h-[80%] flex items-center justify-center bg-gray-100">
+      <div className="p-8 h-full rounded-lg shadow-md w-full max-w-md bg-[var(--main-white)] rounded-xl">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
         {error && (
@@ -113,46 +115,51 @@ function Login() {
         )}
 
         {infoMessage && (
-          <div className="bg-blue-100 border border-blue-300 text-blue-700 px-4 py-3 rounded mb-4">
+          <div className="bg-blue-100 border border-blue-300   rounded-xl text-[var(--mainblue)] px-4 py-3 mb-4">
             {infoMessage}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email
-            </label>
+        <form className="h-full" onSubmit={handleSubmit}>
+          <div className="mb-4 input-box relative">
+           
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-              placeholder="Enter your email"
+              className="w-full px-3 py-2 border border-gray-300  rounded-xl focus:outline-[var(--purpluish)]"
+              placeholder=""
             />
+             <label className="absolute left-4 top-2  text-[var(--metal-dark4)] pointer-events-none bg-[var(--main-white)] px-1">
+              Email
+            </label>
+            <Mail size={18} className="absolute right-4 top-2"/>
           </div>
 
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Password
-            </label>
+          <div className="mb-6 input-box relative">
+            
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-              placeholder="Enter your password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-xl bg-[var(--main-white)] focus:outline-[var(--purpluish)] "
+              placeholder=""
             />
+      
+            <label className="absolute left-4 top-2  text-[var(--metal-dark4)] pointer-events-none bg-[var(--main-white)] px-1">
+              Password
+          </label>
+                  <Lock size={18} className="absolute right-4 top-2" />
           </div>
 
           <div className="mb-4 text-right">
             <Link
               to="/forgot-password"
-              className="text-sm text-blue-500 hover:underline"
+              className="text-sm text-[var(--purpluish)] hover:underline"
             >
               Forgot Password?
             </Link>
@@ -161,7 +168,8 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400"
+            className="w-full text-[var(--purpluish)] bg-[var(--purpluish)] rounded-xl  text-white font-bold py-2 px-4 rounded-xl 
+            hover:bg-[var(--bluis)] shadow-lg disabled:bg-gray-400"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
@@ -169,7 +177,7 @@ function Login() {
 
         <p className="mt-4 text-center text-gray-600 text-sm">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-blue-500 hover:underline">
+          <Link to="/signup" className="text-[var(--purpluish)]  hover:underline">
             Sign Up
           </Link>
         </p>
@@ -195,7 +203,7 @@ function Login() {
                 onChange={(e) => setCodeInput(e.target.value)}
                 maxLength={6}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded mb-4 focus:outline-none focus:border-blue-500 text-center tracking-widest text-lg"
+                className="w-full px-3 py-2 border rounded-xl border-gray-300 mb-4 focus:outline-none hover:bg-[var(--bluish)] text-center tracking-widest text-lg"
                 placeholder="123456"
               />
 
@@ -203,7 +211,7 @@ function Login() {
                 <button
                   type="submit"
                   disabled={verifying}
-                  className="flex-1 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 disabled:bg-gray-400"
+                  className="flex-1 bg-[var(--color-success-b)] shadow-lg rounded-xl text-white font-bold py-2 px-4  hover:bg-[var(--color-success-a)] disabled:bg-gray-400"
                 >
                   {verifying ? "Verifying..." : "Verify"}
                 </button>
@@ -212,14 +220,14 @@ function Login() {
                   type="button"
                   onClick={handleResend}
                   disabled={resendLoading}
-                  className="bg-gray-200 text-gray-700 font-bold py-2 px-3 rounded hover:bg-gray-300 disabled:opacity-60"
+                  className="rounded-xl bg-[var(--moon-phases-e)] text-gray-700 font-bold py-2 px-3  hover:bg-gray-500  text-white disabled:opacity-60"
                 >
                   {resendLoading ? "Sending..." : "Resend"}
                 </button>
               </div>
             </form>
 
-            <div className="mt-3 text-sm text-gray-500">
+            <div className="mt-3 text-sm text-gray-500 rounded-xl">
               <button
                 type="button"
                 onClick={() => {
@@ -228,7 +236,7 @@ function Login() {
                   setLoginToken("");
                   setCodeInput("");
                 }}
-                className="underline text-sm text-gray-600 hover:text-gray-800"
+                className="underline text-sm text-gray-600 rounded-xl hover:text-gray-800"
               >
                 Cancel
               </button>

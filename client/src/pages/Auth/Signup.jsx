@@ -42,7 +42,7 @@ function Signup() {
       localStorage.setItem("user", JSON.stringify(response.user));
 
       // Redirect to feed
-      navigate("/feed");
+      navigate("/reports");
     } catch (err) {
       setError(
         err.response?.data?.message || "Signup failed. Please try again."
@@ -74,7 +74,7 @@ function Signup() {
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-3 py-2 rounded-xl border border-gray-300  focus:outline-none hover:bg-[var(--bluish)] focus:outline-none focus:border-blue-500"
               placeholder="Enter your name"
             />
           </div>
@@ -89,7 +89,7 @@ function Signup() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-3 py-2 rounded-xl border border-gray-300  focus:outline-none hover:bg-[var(--bluish)] focus:outline-none focus:border-blue-500"
               placeholder="Enter your email"
             />
           </div>
@@ -104,7 +104,7 @@ function Signup() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-xl hover:bg-[var(--bluish)] focus:outline-none focus:border-blue-500"
               placeholder="Enter your password (min 8 characters)"
             />
           </div>
@@ -112,7 +112,7 @@ function Signup() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 disabled:bg-gray-400"
+            className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-xl hover:bg-blue-600 disabled:bg-gray-400"
           >
             {loading ? "Signing up..." : "Sign Up"}
           </button>
