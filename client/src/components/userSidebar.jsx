@@ -15,11 +15,16 @@ function Sidebar() {
                         <span className="py-2">Feed</span>           
             </NavLink>
 
-
             <NavLink className={({isActive}) => (`text-[0.8rem] column rounded-xl  center px-4 py-2  ${isActive ? 
                 "bg-[var(--moon-phases-d)]" : "bg-white"}`)} to="/login">  
                 <ClipboardMinus size={24}/>
                 <span className="py-2">My Reports</span>
+            </NavLink>
+    
+            <NavLink className={({isActive}) => (`text-[0.8rem] column rounded-xl  center px-4 py-2  ${isActive ? 
+                "bg-[var(--moon-phases-d)]" : "bg-white"}`)} to="/login">  
+                <ClipboardMinus size={24}/>
+                <span className="py-2">Logout</span>
             </NavLink>
 
         </div>
