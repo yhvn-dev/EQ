@@ -1,3 +1,4 @@
+// eq/server/controller/authController.js
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import axios from "axios";
@@ -8,6 +9,7 @@ import {
   comparePassword,
   findUserById,
   updatePassword,
+  updateUserData,
 } from "../models/User.js";
 import {
   validateEmail,
@@ -161,7 +163,12 @@ export const verifyEmail = async (req, res) => {
     res.json({
       message: "Login success",
       token,
-      user: { id: user.id, name: user.name, email: user.email },
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        location: user.location,
+      },
     });
   } catch (err) {
     console.error("🔥 Verify email error:", err);
@@ -263,5 +270,131 @@ export const verifyToken = async (req, res) => {
   } catch (err) {
     console.error("Token error:", err);
     res.status(401).json({ message: "Invalid or expired token" });
+  }
+};
+
+// NEW: Update user profile
+export const updateProfile = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token" });
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const { name, email, location, currentPassword, newPassword } = req.body;
+
+    // Validate inputs
+    if (name && !validateName(name))
+      return res.status(400).json({ message: "Invalid name" });
+
+    if (email && !validateEmail(email))
+      return res.status(400).json({ message: "Invalid email" });
+
+    // Check if email is already used by another user
+    if (email) {
+      const existingUser = await findUserByEmail(email);
+      if (existingUser && existingUser.id !== decoded.userId) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+    }
+
+    // Handle password change
+    if (newPassword) {
+      if (!currentPassword)
+        return res.status(400).json({ message: "Current password required" });
+
+      if (!validatePassword(newPassword))
+        return res.status(400).json({ message: "Weak new password" });
+
+      const user = await findUserById(decoded.userId);
+      if (!(await comparePassword(currentPassword, user.password)))
+        return res.status(401).json({ message: "Current password incorrect" });
+
+      await updatePassword(decoded.userId, newPassword);
+    }
+
+    // Update user data
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+    if (location !== undefined) updateData.location = location;
+
+    if (Object.keys(updateData).length > 0) {
+      await updateUserData(decoded.userId, updateData);
+    }
+
+    const updatedUser = await findUserById(decoded.userId);
+    res.json({ message: "Profile updated", user: updatedUser });
+  } catch (err) {
+    console.error("Update profile error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// NEW: Get Philippine locations
+export const getLocations = async (req, res) => {
+  try {
+    const { region } = req.query;
+
+    // Philippine regions and their major cities
+    const locations = {
+      NCR: [
+        "Manila",
+        "Quezon City",
+        "Makati",
+        "Pasig",
+        "Taguig",
+        "Mandaluyong",
+        "Parañaque",
+        "Las Piñas",
+        "Muntinlupa",
+      ],
+      CAR: ["Baguio", "Tabuk", "La Trinidad", "Bontoc"],
+      "Region I": ["San Fernando", "Dagupan", "Laoag", "Vigan", "Urdaneta"],
+      "Region II": ["Tuguegarao", "Ilagan", "Santiago", "Cauayan"],
+      "Region III": [
+        "San Fernando",
+        "Angeles",
+        "Olongapo",
+        "Malolos",
+        "Tarlac City",
+      ],
+      "Region IV-A": [
+        "Calamba",
+        "Batangas City",
+        "Lucena",
+        "Antipolo",
+        "Cavite City",
+      ],
+      "Region IV-B": ["Calapan", "Puerto Princesa", "Boac"],
+      "Region V": ["Legazpi", "Naga", "Iriga", "Sorsogon City"],
+      "Region VI": ["Iloilo City", "Bacolod", "Roxas", "Kalibo"],
+      "Region VII": [
+        "Cebu City",
+        "Mandaue",
+        "Lapu-Lapu",
+        "Tagbilaran",
+        "Dumaguete",
+      ],
+      "Region VIII": ["Tacloban", "Ormoc", "Calbayog", "Catbalogan"],
+      "Region IX": ["Zamboanga City", "Pagadian", "Dipolog"],
+      "Region X": ["Cagayan de Oro", "Iligan", "Valencia", "Malaybalay"],
+      "Region XI": ["Davao City", "Tagum", "Panabo", "Digos"],
+      "Region XII": ["General Santos", "Koronadal", "Tacurong"],
+      "Region XIII": ["Butuan", "Cabadbaran", "Bayugan"],
+      BARMM: ["Cotabato City", "Marawi", "Lamitan"],
+    };
+
+    if (region) {
+      // Return cities for specific region
+      const cities = locations[region] || [];
+      res.json({ cities });
+    } else {
+      // Return all regions
+      const regions = Object.keys(locations);
+      res.json({ regions });
+    }
+  } catch (err) {
+    console.error("Get locations error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };

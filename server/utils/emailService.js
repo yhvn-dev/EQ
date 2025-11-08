@@ -30,6 +30,7 @@ export const sendPasswordResetEmail = async (email, resetToken) => {
   await transporter.sendMail(mailOptions);
 };
 
+// asd
 export const sendWelcomeEmail = async (email, name) => {
   const mailOptions = {
     from: process.env.GOOGLE_APP_USER,

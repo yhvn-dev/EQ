@@ -1,3 +1,4 @@
+// eq/server/routes/authRoutes.js
 import express from "express";
 import {
   signup,
@@ -7,6 +8,8 @@ import {
   verifyToken,
   verifyEmail,
   resendVerification,
+  updateProfile,
+  getLocations,
 } from "../controller/authController.js";
 
 const router = express.Router();
@@ -20,5 +23,9 @@ router.post("/reset-password", resetPassword);
 router.get("/verify", verifyToken);
 router.post("/verify-email", verifyEmail);
 router.post("/resend-verification", resendVerification);
+
+// NEW routes
+router.put("/profile", updateProfile);
+router.get("/locations", getLocations);
 
 export default router;

@@ -1,3 +1,4 @@
+// eq/server/models/User.js
 import db from "../config/database.js";
 import bcrypt from "bcrypt";
 
@@ -19,7 +20,8 @@ export const findUserByEmail = async (email) => {
 };
 
 export const findUserById = async (id) => {
-  const query = "SELECT id, name, email, created_at FROM users WHERE id = ?";
+  const query =
+    "SELECT id, name, email, location, created_at FROM users WHERE id = ?";
   const [rows] = await db.execute(query, [id]);
 
   return rows[0] || null;
@@ -34,4 +36,31 @@ export const updatePassword = async (userId, newPassword) => {
 
   const query = "UPDATE users SET password = ? WHERE id = ?";
   await db.execute(query, [hashedPassword, userId]);
+};
+
+// NEW: Update user data (name, email, location)
+export const updateUserData = async (userId, data) => {
+  const fields = [];
+  const values = [];
+
+  if (data.name !== undefined) {
+    fields.push("name = ?");
+    values.push(data.name);
+  }
+
+  if (data.email !== undefined) {
+    fields.push("email = ?");
+    values.push(data.email);
+  }
+
+  if (data.location !== undefined) {
+    fields.push("location = ?");
+    values.push(data.location);
+  }
+
+  if (fields.length === 0) return;
+
+  values.push(userId);
+  const query = `UPDATE users SET ${fields.join(", ")} WHERE id = ?`;
+  await db.execute(query, values);
 };
