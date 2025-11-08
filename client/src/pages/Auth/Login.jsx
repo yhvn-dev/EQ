@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { login, verifyLoginCode, resendVerification } from "../../services/api";
+import { login, verifyLoginCode, resendVerification } from "../../services/userService";
 
 function Login() {
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ function Login() {
         // If server returns token directly (fallback), save and redirect
         localStorage.setItem("token", response.token);
         localStorage.setItem("user", JSON.stringify(response.user));
-        navigate("/feed");
+        navigate("/");
       }
     } catch (err) {
       setError(
