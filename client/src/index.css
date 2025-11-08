@@ -100,9 +100,14 @@
   font-family: "Mona";
   src: url("./assets/Fonts/MonaSans-VariableFont_wdth\,wght.ttf");
 }
+@font-face {
+  font-family: "Poppins";
+  src: url("./assets/Fonts/Poppins-Regular.ttf");
+}
+
 
 * {
-  font-family: "Mona";
+  font-family: "Poppins";
 }
 
 .center {
@@ -146,3 +151,13 @@
   transform: translateY(-100%);
   font-size: 0.8rem;
 }
+
+
+.eq-table td-tr:nth-child(odd){
+  @apply bg-[var(--moon-phases-e)]
+} 
+
+
+.eq-table tr:nth-child(even){
+  @apply bg-[var(--gainsbro)]
+} 
