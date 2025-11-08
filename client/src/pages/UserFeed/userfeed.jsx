@@ -26,28 +26,6 @@ function Feed() {
       console.error("Error Opening Login")
     }
   }  
- 
-  const NavigateLogin = () =>{
-    try { 
-      setTimeout(() =>{
-        navigate("/login")        
-      },1000)
-    } catch (error) {
-      console.error("Error Opening Login")
-    }
-  }  
-   
-  const NavigateSignup = () =>{
-    try { 
-      setTimeout(() =>{
-        navigate("/signup")        
-      },1000)
-    } catch (error) {
-      console.error("Error Opening Singup")
-    }
-  }  
-
-
   const fetchEQ = async () =>{
       try { 
         const data = await userService.eqAll()
@@ -61,17 +39,11 @@ function Feed() {
 
  
    return (
-    <section className='full grid grid-cols-1fr grid-rows-[3rem_5rem_75vh]  gap-4 overflow-y-hidden '>
+    <section className='full grid grid-cols-1fr grid-rows-[3rem_5rem_75vh] grid-rows-[1fr_3fr_75vh] lg:grid-rows-[1fr] lg:grid-cols-[1fr_9fr] gap-4 overflow-y-hidden  lg:overflow-y-auto '>
 
-      <Header right={
-        <nav className='mx-4'>
-          <button onClick={NavigateLogin} className='border-1 rounded-xl shadow-md px-4 py-1  cursor-pointer'>Login</button>
-          <button onClick={NavigateSignup} className='border-1 rounded-xl shadow-md px-4 py-1 mr-2 ml-4 cursor-pointer'>Signup</button>
-        </nav>
-      }/>
       <Sidebar/>
     
-      <main className="full shadow-lg column-t row-start-3 row-end-3 col-start-1 col-end-1 md:col-start-2 col-span-full overflow-y-hidden" >
+      <main className="full  shadow-lg column-t row-start-3 row-end-3 col-start-1  lg:row-start-1 lg:row-end-span-full lg:col-start-2 lg:col-span-full overflow-y-hidden  lg:overflow-y-auto" >
      
         <nav className="w-full center h-[30%] p-2 ">
           <div className='full center-l'>EarthQuakes</div>
@@ -81,7 +53,7 @@ function Feed() {
         </nav>
       
         <div className='column-t overflow-y-auto overflow-x-auto' >
-          <table className='eq-table table-fixed md:max-w-full md:w-full lg:max-w-full lg:w-full '>
+          <table className='eq-table table-fixed lg:max-w-full lg:w-full lg:max-w-full lg:w-full lg:overflow-y-auto'>
             <thead>
               <tr className='tr-th shadow-lg bg-[var(--white-blple)]'>
                 <th className='p-4  font-semibold'>Date Time</th>
@@ -94,7 +66,7 @@ function Feed() {
               </tr>
             </thead>
 
-           <tbody className='w-full overflow-hidden'>
+           <tbody className='w-full overflow-hidden  lg:overflow-y-auto'>
               {eq.length > 0 && eq.map((e)=>{
                 return (
                   <>
